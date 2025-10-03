@@ -14,6 +14,22 @@ custo_beneficio = [['VOLKSWAGEN POLO', 'HYUNDAI HB20', 'FORD KA'],
                    ['MITSUBISHI LANCER EVO X', 'SUBARU IMPREZA WRX STI', 'AUDI RS4', 'BMW M135i'],
                    ['HYUNDAI HR', 'MERCEDES SPRINTER TRUCK']]
 
+def sair_programa(sair):
+    print('Saindo do programa...')
+    exit()
+    
+def validar_entradas(x, y):
+    try:
+        x = int(x)
+        if x in range(y):
+            return x
+        else:
+            print('Digite apenas números da lista.\n')
+            return None
+    except ValueError:
+        print('Por favor, digite apenas números.\n')
+        return None
+
 def solicitar_nome():
     nome = input('Olá, seja bem vindo a J & L ALOCADORA DE VEICULOS. Por favor insira seu nome para continuarmos com o atendimento. ')    
     while True:
@@ -32,47 +48,48 @@ def solicitar_nome():
 
 def solicitar_classe_custo():
     while True:
-        try:
-            classificacao_custo = int(input('Digite o número referente a qual categoria de custo você prefere:\n'
-                                             '0 - Categoria Premium\n1 - Categoria Custo Beneficio\n'))
-            if classificacao_custo in [0,1]:
-                return classificacao_custo
+        classificacao_custo = (input('Digite o número referente a qual categoria de custo você prefere:\n'
+                                        '0 - Categoria Premium\n1 - Categoria Custo Beneficio\n2 - Sair\n'))
+        classificacao_validada = validar_entradas(classificacao_custo, 3)
+        if classificacao_validada is not None:
+            if classificacao_validada == 2:
+                sair_programa(2)
             else:
-                print('Numero invalido, digite apenas números da lista.\n')
-        except ValueError:
-            print('Por favor, digite apenas números.\n')
-
+                return classificacao_validada
+        
 
 def solicitar_categorias():
     while True:   
-        try:
-            categorias = int(input(f'Perfeito, {nome}. Digite o número referente à categoria de carro desejada:\n'
-                                    '0 - Hatchs\n1 - Sedans\n2 - Picapes\n3 - SUVs\n4 - Vans\n5 - Esportivos\n6 - Caminhões\n'))
-            if categorias in range(7):
-                return categorias
+        categorias = (input('Perfeito, {nome}. Digite o número referente à categoria de carro desejada:\n'
+                                    '0 - Hatchs\n1 - Sedans\n2 - Picapes\n3 - SUVs\n4 - Vans\n5 - Esportivos\n6 - Caminhões\n7 - Sair\n'))
+        categorias_validada = validar_entradas(categorias, 8)
+        if categorias_validada is not None:
+            if categorias_validada == 7:
+                sair_programa(7)
             else:
-                print('Digite apenas números da lista.\n')
-        except ValueError:
-            print('Por favor, digite apenas números.\n')
+                return categorias_validada
     
     
 def escolher_carro():
     while True:
-        try:        
-            if classificacao_custo == 0:
-                carros_disponiveis = premium[categorias]
+        if classificacao_custo == 0:
+            carros_disponiveis = premium[categorias]
+        else:
+            carros_disponiveis = custo_beneficio[categorias]
+        print('Carros disponiveis: ')
+        indice_carros = []
+        for i, carro in enumerate(carros_disponiveis):
+            print(f'{i} - {carro}')
+            indice_carros.append(i)
+        tamanho = len(indice_carros)
+        indice_carros.append(tamanho)
+        escolha = (input(f'{i+1} - SAIR\nEscolha o número do carro desejado: '))
+        carro_escolhido = validar_entradas(escolha, i+2)
+        if carro_escolhido is not None:
+            if carro_escolhido == indice_carros[-1]:
+                sair_programa(indice_carros[-1])
             else:
-                carros_disponiveis = custo_beneficio[categorias]
-            print('Carros disponiveis: ')
-            for i, carro in enumerate(carros_disponiveis):
-                print(f'{i} - {carro}')
-            escolha = int(input('Escolha o número do carro desejado: '))
-            if escolha in range(i+1):
-                return carros_disponiveis[escolha]
-            else:
-                print('Escolha apenas números da lista.\n ')
-        except ValueError:
-            print('Digite apenas números\n')
+                return carros_disponiveis[carro_escolhido]
     
     
 #main
