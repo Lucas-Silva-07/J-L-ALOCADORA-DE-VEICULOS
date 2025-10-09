@@ -1,3 +1,5 @@
+from ..database.conexao import criar_conexao
+
 class MainSystem():
 
     def __init__(self):
@@ -5,7 +7,8 @@ class MainSystem():
         self.cat_custo = None
         self.carroceria = None
         self.carro = None
-        self.valor = None     
+        self.valor = None
+        self.conexao = None    
 
     def solicitar_nome(self):
         '''
@@ -31,14 +34,19 @@ class MainSystem():
     def solicitar_cat_custo(self):
         self.cat_custo = input("Digite a categoria (ex: Premium ou Custo beneficio): ").strip().upper()
 
-    def filtar_cat_custo(self):
-        
-
+    def conectar_dados(self):
+        self.conexao = criar_conexao()
+        if not self.conexao:
+            print('Erro na conexão com os dados')
+    
+    def filtrar_cat_custo(self):
+        pass
 
 
 
 #main
-if __name__ == '__main__':
+if __name__ == '__run__':
     sistema = MainSystem()
     sistema.solicitar_nome()
+    sistema.solicitar_cat_custo()
     print(sistema.nome)
