@@ -37,6 +37,6 @@ class MainSystem():
 #main
 if __name__ == '__run__':
     sistema = MainSystem()
-    sistema.filtrar_carroceria()
-    sistema.filtrar_carros()
-    sistema.carro_escolhido()
+    sistema.solicitar_nome()
+    sistema.solicitar_cat_custo()
+    print(sistema.nome)

@@ -1,4 +1,4 @@
-from src.models.mainsystem import MainSystem
+from tests.test_mainsystem import MainSystem
 
 sistema = MainSystem()
 sistema.filtrar_carroceria()
