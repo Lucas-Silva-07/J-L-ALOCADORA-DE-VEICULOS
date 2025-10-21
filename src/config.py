@@ -10,3 +10,9 @@ ICO_PATH = os.path.join(PASTA_ANTERIOR, "assets", "images", "jl_icon.ico")
 FONT_POPINS = os.path.join(PASTA_ANTERIOR, "assets", "fonts", "Poppins-SemiBold.ttf")
 
 LOGO_PATH = os.path.join(PASTA_ANTERIOR, "assets", "images", "logo.png")
+
+BOTAO_LOGIN = os.path.join(PASTA_ANTERIOR, "assets", "images", "botao_login.png")
+BOTAO_LOGIN_HOVER = os.path.join(PASTA_ANTERIOR, "assets", "images", "botao_login_hover.png")
+
+EYE_PATH = os.path.join(PASTA_ANTERIOR, "assets", "images", "eye.png")
+CLOSE_EYE_PATH = os.path.join(PASTA_ANTERIOR, "assets", "images", "invisible.png")
