@@ -1,7 +1,6 @@
-from src.config import ICO_PATH, LOGO_PATH, BOTAO_LOGIN, BOTAO_LOGIN_HOVER, EYE_PATH, CLOSE_EYE_PATH
+from src.config import ICO_PATH, LOGO_PATH, BOTAO_LOGIN, BOTAO_LOGIN_HOVER, EYE_PATH, CLOSE_EYE_PATH, FONT_POPINS
 from PIL import Image
 import customtkinter
-import tkextrafont
 
 
 class App(customtkinter.CTk):
@@ -26,30 +25,31 @@ class App(customtkinter.CTk):
         self.checkbox_frame = customtkinter.CTkFrame(self)
         self.checkbox_frame.grid(row=0, column=0, padx=10, pady=(10, 0), sticky='nw')        
         self.checkbox_frame.configure(fg_color="#CECECE")
-
+        #Fonte personalizada
+        customtkinter.FontManager.load_font(FONT_POPINS)
         #Label Bem Vindo
-        self.texto1 = customtkinter.CTkLabel(self.checkbox_frame, text="BEM-VINDO", font=("Poppins", 34, "bold"), text_color="black")
+        self.texto1 = customtkinter.CTkLabel(self.checkbox_frame, text="ACESSE SUA CONTA", font=("Poppins SemiBold", 30, "bold"), text_color="black")
         self.texto1.grid(row=0, column=0, padx=75, pady=(75, 0), sticky='w')
         #Label pedindo email 
-        self.texto2 = customtkinter.CTkLabel(self.checkbox_frame, text="Por favor, insira seus dados.", font=("Poppins", 14), text_color="#625B5B")
+        self.texto2 = customtkinter.CTkLabel(self.checkbox_frame, text="Por favor, insira seus dados.", font=("Poppins SemiBold", 14), text_color="#625B5B")
         self.texto2.grid(row=1, column=0, padx=75, pady=(0, 0), sticky='w')
         #Label email
-        self.texto3 = customtkinter.CTkLabel(self.checkbox_frame, text="Email", font=("Poppins", 16), text_color="black")
+        self.texto3 = customtkinter.CTkLabel(self.checkbox_frame, text="Email", font=("Poppins SemiBold", 16), text_color="black")
         self.texto3.grid(row=2, column=0, padx=75, pady=(20, 0), sticky='w')
         #Caixa entrada email
-        self.entry_email = customtkinter.CTkEntry(self.checkbox_frame, text_color= "black", placeholder_text="Digite seu email", fg_color="#CECECE", border_color="#ADADAD", width=300, height=40)
+        self.entry_email = customtkinter.CTkEntry(self.checkbox_frame, text_color= "black", placeholder_text="Digite seu email", fg_color="#CECECE", border_color="#ADADAD", width=300, height=40, font=("Poppins SemiBold", 12))
         self.entry_email.grid(row=3, column=0, padx=75, pady=(0, 0), sticky='w')
         #Label Senha
-        self.texto4 = customtkinter.CTkLabel(self.checkbox_frame, text="Senha", font=("Poppins", 16), text_color="black")
+        self.texto4 = customtkinter.CTkLabel(self.checkbox_frame, text="Senha", font=("Poppins SemiBold", 16), text_color="black")
         self.texto4.grid(row=4, column=0, padx=75, pady=(20, 0), sticky='w')       
         #Caixa entrada senha
-        self.entry_senha = customtkinter.CTkEntry(self.checkbox_frame, text_color= "black", show="*", placeholder_text="Digite a senha", fg_color="#CECECE", border_color="#ADADAD", width=300, height=40)
+        self.entry_senha = customtkinter.CTkEntry(self.checkbox_frame, text_color= "black", show="*", placeholder_text="Digite a senha", fg_color="#CECECE", border_color="#ADADAD", width=300, height=40, font=("Poppins SemiBold", 12))
         self.entry_senha.grid(row=5, column=0, padx=75, pady=(0, 0), sticky='w')
         # Botão do olhinho ao lado do entry
         self.eye_open_img = customtkinter.CTkImage(Image.open(EYE_PATH), size=(35, 15))
         self.eye_closed_img = customtkinter.CTkImage(Image.open(CLOSE_EYE_PATH), size=(35, 15))
         self.btn_eye = customtkinter.CTkButton(self.checkbox_frame, text="", image=self.eye_closed_img, command=self.alternar_password, fg_color="transparent", width=5, hover=None)
-        self.btn_eye.place(x=320, y=285)  # ajusta posição conforme necessário
+        self.btn_eye.place(x=320, y=300)  # ajusta posição conforme necessário
 
         #Botão entrar
         #Imagem botão normal
