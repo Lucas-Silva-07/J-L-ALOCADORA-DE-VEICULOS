@@ -1,0 +1,34 @@
+#Python bytecode
+_pycache_/
+*.py[cod]
+*.pyc
+*.pyo
+
+#Virtual environments
+venv/
+.env/
+.venv/
+ENV/
+env/
+
+#VS Code settings
+.vscode/
+
+#Pytest
+.cache/
+.pytest_cache/
+
+#Jupyter notebooks
+.ipynb_checkpoints/
+
+#Log files
+*.log
+
+#IDEs
+.idea/
+
+#Outros
+*.swp
+*.bak
+
+
