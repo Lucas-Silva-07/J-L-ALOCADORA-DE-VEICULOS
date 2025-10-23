@@ -3,7 +3,7 @@ from PIL import Image
 import customtkinter
 
 
-class App(customtkinter.CTk):
+class LoginPage(customtkinter.CTk):
     def __init__(self):
         super().__init__()
         #Configurações da janela
@@ -93,5 +93,5 @@ class App(customtkinter.CTk):
             self.entry_senha.configure(show="")
             self.btn_eye.configure(image=self.eye_open_img)  # olho aberto
 
-app = App()
+app = LoginPage()
 app.mainloop()
