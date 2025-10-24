@@ -1,16 +1,20 @@
-from src.config import ICO_PATH, LOGO_PATH, FONT_POPINS, BTN_NORMAL
-from PIL import Image, ImageEnhance
+from src.gui.pages.base_page import BasePage
 import customtkinter
 
 
-class MenuPage(customtkinter.CTk):
-    def __init__(self):
-        super().__init__()
+class MenuPage(BasePage):
+    def __init__(self, controller=None):
+        super().__init__(controller)
         self.configurar_janela()
         self.carregar_recursos()
         self.criar_frame_principal()
         self.criar_logo()
-        self.criar_botoes()
+        self.criar_botoes([
+            ("Nova Consulta", self.nova_consulta),
+            ("Carros Alugados", self.carros_alugados),
+            ("Configuração de Conta", self.configuracao_conta),
+            ("Sair da Conta", self.sair_conta)
+        ])
         self.texto_principal = customtkinter.CTkLabel(self,
             text="MENU PRINCIPAL", 
             font=("Poppins SemiBold", 34), 
@@ -19,145 +23,6 @@ class MenuPage(customtkinter.CTk):
             bg_color="transparent", 
             )
         self.texto_principal.place(x=320, y=40)
-    # ============================================
-    # CONFIGURAÇÕES BÁSICAS
-    # ============================================
-    def configurar_janela(self):
-        """Define aparência e posição da janela"""
-        self.title("JL Alocadora de Veículos")
-
-        largura_janela = 930
-        altura_janela = 530
-        largura_tela = self.winfo_screenwidth()
-        altura_tela = self.winfo_screenheight()
-
-        x = (largura_tela / 2) - (largura_janela / 2)
-        y = (altura_tela / 2) - (altura_janela / 2)
-
-        self.geometry(f"{largura_janela}x{altura_janela}+{int(x)}+{int(y)}")
-        self.resizable(False, False)
-        self.configure(fg_color="#CECECE")
-        self.iconbitmap(ICO_PATH)
-
-    # ============================================
-    # CARREGAMENTO DE RECURSOS (FONTES / IMAGENS)
-    # ============================================
-    def carregar_recursos(self):
-        """Carrega fontes e imagens usadas na interface"""
-        # Fonte personalizada
-        customtkinter.FontManager.load_font(FONT_POPINS)
-
-        # Carrega imagem base uma única vez
-        self.img_base = Image.open(BTN_NORMAL)
-
-        # Cria CTkImage padrão
-        self.img_normal = customtkinter.CTkImage(
-            light_image=self.img_base,
-            dark_image=self.img_base,
-            size=(300, 40)
-        )
-
-        # Logo
-        self.img_logo = customtkinter.CTkImage(
-            Image.open(LOGO_PATH),
-            size=(530, 530)
-        )
-
-    # ============================================
-    # ESTRUTURA PRINCIPAL
-    # ============================================
-    def criar_frame_principal(self):
-        """Cria o frame da lateral esquerda"""
-        self.frame_menu = customtkinter.CTkFrame(self, fg_color="#CECECE")
-        self.frame_menu.grid(row=0, column=0, padx=10, pady=(10, 0), sticky="nw")
-
-        # Controla espaçamento interno dos botões
-        self.frame_menu.grid_rowconfigure((0, 1, 2, 3), weight=0)
-        self.frame_menu.grid_columnconfigure(0, weight=1)
-
-    def criar_logo(self):
-        """Exibe o logo à direita"""
-        label_logo = customtkinter.CTkLabel(self, image=self.img_logo, text="")
-        label_logo.place(x=400, y=-20)
-
-    # ============================================
-    # BOTÕES E FUNÇÕES
-    # ============================================
-    def criar_botoes(self):
-        """Cria e posiciona todos os botões do menu"""
-        botoes = [
-            ("Nova Consulta", self.nova_consulta),
-            ("Carros Alugados", self.carros_alugados),
-            ("Configuração de Conta", self.configuracao_conta),
-            ("Sair da Conta", self.sair_conta)
-        ]
-
-        for i, (texto, funcao) in enumerate(botoes):
-            label = self.criar_botao(texto)
-            label.grid(row=i, column=0, padx=75, pady=(15 if i else 140, 0))
-            label.bind("<Button-1>", lambda e, f=funcao: f())  # passa a função corretamente
-            self.adicionar_hover_escurecer(label)
-
-    def criar_botao(self, texto):
-        """Cria um botão padrão do menu usando label com imagem"""
-        return customtkinter.CTkLabel(
-            self.frame_menu, 
-            text=texto, 
-            font=("Poppins SemiBold", 14), 
-            text_color="white", 
-            fg_color="transparent", 
-            bg_color="transparent", 
-            image=self.img_normal,
-            cursor="hand2"
-            )
-
-    # ============================================
-    # EFEITO HOVER ESCURECER
-    # ============================================
-    def adicionar_hover_escurecer(self, botao):
-        """Aplica efeito suave de escurecimento no hover"""
-        botao._hover_ativo = False
-        botao._brilho_atual = 1.0  # brilho inicial (100%)
-
-        def on_enter(_):
-            botao._hover_ativo = True
-            self._animar_escurecer(botao, 1.0, 0.55)  # 85% brilho no hover
-
-        def on_leave(_):
-            botao._hover_ativo = False
-            self._animar_escurecer(botao, botao._brilho_atual, 1.0)
-
-        botao.bind("<Enter>", on_enter)
-        botao.bind("<Leave>", on_leave)
-
-    def _animar_escurecer(self, botao, brilho_inicial, brilho_final, passos=8, tempo=20):
-        """Anima suavemente a mudança de brilho"""
-        diferenca = (brilho_final - brilho_inicial) / passos
-        brilho = brilho_inicial
-
-        def animar():
-            nonlocal brilho
-            if ((brilho_final > brilho_inicial and brilho < brilho_final) or
-                (brilho_final < brilho_inicial and brilho > brilho_final)):
-
-                brilho += diferenca
-                botao._brilho_atual = brilho
-
-                # Ajusta brilho da imagem base
-                enhancer = ImageEnhance.Brightness(self.img_base)
-                img_editada = enhancer.enhance(brilho)
-
-                # Atualiza a imagem no botão
-                nova_img = customtkinter.CTkImage(
-                    light_image=img_editada,
-                    dark_image=img_editada,
-                    size=(300, 40)
-                )
-                botao.configure(image=nova_img)
-
-                self.after(tempo, animar)
-
-        animar()
 
     # ============================================
     # FUNÇÕES DOS BOTÕES
@@ -176,5 +41,5 @@ class MenuPage(customtkinter.CTk):
 
 
 if __name__ == "__main__":
-    app = MenuPage()
+    app = MenuPage(controller=None)
     app.mainloop()

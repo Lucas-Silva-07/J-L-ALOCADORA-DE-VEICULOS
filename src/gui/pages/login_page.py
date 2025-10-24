@@ -37,7 +37,7 @@ class LoginPage(customtkinter.CTk):
         self.texto3 = customtkinter.CTkLabel(self.checkbox_frame, text="Email", font=("Poppins SemiBold", 16), text_color="black")
         self.texto3.grid(row=2, column=0, padx=75, pady=(20, 0), sticky='w')
         #Caixa entrada email
-        self.entry_email = customtkinter.CTkEntry(self.checkbox_frame, text_color= "black", placeholder_text="Digite seu email", fg_color="#CECECE", border_color="#ADADAD", width=300, height=40, font=("Poppins SemiBold", 12))
+        self.entry_email = customtkinter.CTkEntry(self.checkbox_frame, text_color= "black", placeholder_text="Digite seu email", fg_color="#CECECE", border_color="#F1C0C0", width=300, height=40, font=("Poppins SemiBold", 12))
         self.entry_email.grid(row=3, column=0, padx=75, pady=(0, 0), sticky='w')
         #Label Senha
         self.texto4 = customtkinter.CTkLabel(self.checkbox_frame, text="Senha", font=("Poppins SemiBold", 16), text_color="black")
