@@ -75,19 +75,42 @@ class BasePage(customtkinter.CTk):
     # ============================================
     # CRIAR LABEL
     # ============================================ 
-    def criar_label(self, texto, row, column=0, padx=75, pady=(0, 0), font_size=16, color="black", weight="normal", sticky='w'):
+    def criar_label(self, texto, row=None, column=0, padx=75, pady=(0, 0), font_size=16, color="black", weight="normal", sticky='w', use_place=False, x=10, y=10):
         """
-        Cria uma label padronizada e posiciona com grid
+        Cria uma label padronizada e posiciona com grid ou place.
+        
+        Parâmetros:
+            texto (str): texto da label
+            row (int): linha para usar com grid
+            column (int): coluna para usar com grid
+            padx, pady: espaçamento do grid
+            font_size (int): tamanho da fonte
+            color (str): cor do texto
+            weight (str): estilo da fonte (normal/bold/etc)
+            sticky (str): alinhamento no grid
+            use_place (bool): se True, usa .place() em vez de .grid()
+            x, y (int): posição absoluta se usar .place()
         """
         fonte = ("Poppins SemiBold", font_size, weight)
         label = customtkinter.CTkLabel(
             self.frame_menu,
             text=texto,
             font=fonte,
-            text_color=color
+            text_color=color,
+            fg_color="transparent",  # garante que o fundo não fique branco
+            bg_color="transparent"
         )
-        label.grid(row=row, column=column, padx=padx, pady=pady, sticky=sticky)
+
+        if use_place:
+            label.place(x=x, y=y)
+        else:
+            # row precisa estar definido para usar grid
+            if row is None:
+                raise ValueError("O parâmetro 'row' é obrigatório quando não estiver usando place().")
+            label.grid(row=row, column=column, padx=padx, pady=pady, sticky=sticky)
+
         return label
+
 
     # ============================================
     # BOTÕES E FUNÇÕES
