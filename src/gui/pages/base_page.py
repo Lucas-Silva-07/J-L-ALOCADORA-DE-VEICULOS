@@ -73,17 +73,34 @@ class BasePage(customtkinter.CTk):
         label_logo.place(x=400, y=-20)
 
     # ============================================
+    # CRIAR LABEL
+    # ============================================ 
+    def criar_label(self, texto, row, column=0, padx=75, pady=(0, 0), font_size=16, color="black", weight="normal", sticky='w'):
+        """
+        Cria uma label padronizada e posiciona com grid
+        """
+        fonte = ("Poppins SemiBold", font_size, weight)
+        label = customtkinter.CTkLabel(
+            self.frame_menu,
+            text=texto,
+            font=fonte,
+            text_color=color
+        )
+        label.grid(row=row, column=column, padx=padx, pady=pady, sticky=sticky)
+        return label
+
+    # ============================================
     # BOTÕES E FUNÇÕES
     # ============================================
     def criar_botoes(self,lista_tupla):
         """
-        Recebe uma lista de Tupla com nome e função do botão.
+        Recebe uma lista de Tupla com [(nome do botão, função do botão, linha, coluna, padx, pady)]
         Cria e posiciona todos os botões do menu"""
         botoes = lista_tupla
 
-        for i, (texto, funcao) in enumerate(botoes):
+        for texto, funcao, linha, coluna, padx, pady in botoes:
             label = self.criar_botao(texto)
-            label.grid(row=i, column=0, padx=75, pady=(15 if i else 140, 0))
+            label.grid(row=linha, column=coluna, padx=padx, pady=pady)
             label.bind("<Button-1>", lambda e, f=funcao: f())  # passa a função corretamente
             self.adicionar_hover_escurecer(label)
 
