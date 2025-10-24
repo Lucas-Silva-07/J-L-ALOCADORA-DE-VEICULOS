@@ -10,19 +10,18 @@ class MenuPage(BasePage):
         self.criar_frame_principal()
         self.criar_logo()
         self.criar_botoes([
-            ("Nova Consulta", self.nova_consulta),
-            ("Carros Alugados", self.carros_alugados),
-            ("Configuração de Conta", self.configuracao_conta),
-            ("Sair da Conta", self.sair_conta)
+            ("Nova Consulta", self.nova_consulta, 0, 0, 75, (140, 0)),
+            ("Carros Alugados", self.carros_alugados, 1, 0, 75, (20, 0)),
+            ("Configuração de Conta", self.configuracao_conta, 2, 0, 75, (20, 0)),
+            ("Sair da Conta", self.sair_conta, 3, 0, 75, (20, 0))
         ])
-        self.texto_principal = customtkinter.CTkLabel(self,
-            text="MENU PRINCIPAL", 
-            font=("Poppins SemiBold", 34), 
-            text_color="#3F3F3F", 
-            fg_color="transparent", 
-            bg_color="transparent", 
+        self.texto_principal = self.criar_label(
+            "MENU PRINCIPAL", 
+            font_size=34,
+            use_place=True,
+            x=320,
+            y=40
             )
-        self.texto_principal.place(x=320, y=40)
 
     # ============================================
     # FUNÇÕES DOS BOTÕES
