@@ -75,7 +75,7 @@ class BasePage(customtkinter.CTk):
     # ============================================
     # CRIAR LABEL
     # ============================================ 
-    def criar_label(self, texto, row=None, column=0, padx=75, pady=(0, 0), font_size=16, color="black", weight="normal", sticky='w', use_place=False, x=10, y=10):
+    def criar_label(self, texto, row=None, column=0, padx=75, pady=(0, 0), font_size=16, color="black", weight="normal", sticky='w', use_place=False, x=10, y=10, bg_color="transparent", fg_color="transparent", parent=None,):
         """
         Cria uma label padronizada e posiciona com grid ou place.
         
@@ -91,14 +91,15 @@ class BasePage(customtkinter.CTk):
             use_place (bool): se True, usa .place() em vez de .grid()
             x, y (int): posição absoluta se usar .place()
         """
+        parent = parent or self.frame_menu  # padrão: frame_menu
         fonte = ("Poppins SemiBold", font_size, weight)
         label = customtkinter.CTkLabel(
-            self.frame_menu,
+            parent,
             text=texto,
             font=fonte,
             text_color=color,
-            fg_color="transparent",  # garante que o fundo não fique branco
-            bg_color="transparent"
+            fg_color=fg_color,  # garante que o fundo não fique branco
+            bg_color=bg_color
         )
 
         if use_place:
