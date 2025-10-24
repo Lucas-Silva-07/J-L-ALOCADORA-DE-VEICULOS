@@ -1,5 +1,4 @@
 from src.gui.pages.base_page import BasePage
-import customtkinter
 
 
 class MenuPage(BasePage):
@@ -15,14 +14,15 @@ class MenuPage(BasePage):
             ("Configuração de Conta", self.configuracao_conta, 2, 0, 75, (20, 0)),
             ("Sair da Conta", self.sair_conta, 3, 0, 75, (20, 0))
         ])
-        self.texto_principal = self.criar_label(
+        self.criar_label(
             "MENU PRINCIPAL", 
             font_size=34,
+            color="#3F3F3F",
             use_place=True,
             x=320,
-            y=40
+            y=40,
+            parent=self
             )
-
     # ============================================
     # FUNÇÕES DOS BOTÕES
     # ============================================
