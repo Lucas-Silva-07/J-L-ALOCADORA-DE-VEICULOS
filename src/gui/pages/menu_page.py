@@ -2,7 +2,7 @@ from src.gui.pages.base_page import BasePage
 
 
 class MenuPage(BasePage):
-    def __init__(self, controller=None):
+    def __init__(self, controller):
         super().__init__(controller)
         self.configurar_janela()
         self.carregar_recursos()
@@ -12,7 +12,7 @@ class MenuPage(BasePage):
             ("Nova Consulta", self.nova_consulta, 0, 0, 75, (140, 0)),
             ("Carros Alugados", self.carros_alugados, 1, 0, 75, (20, 0)),
             ("Configuração de Conta", self.configuracao_conta, 2, 0, 75, (20, 0)),
-            ("Sair da Conta", self.sair_conta, 3, 0, 75, (20, 0))
+            ("Sair da Conta", lambda: self.trocar_tela("LoginPage"), 3, 0, 75, (20, 0))
         ])
         self.criar_label(
             "MENU PRINCIPAL", 

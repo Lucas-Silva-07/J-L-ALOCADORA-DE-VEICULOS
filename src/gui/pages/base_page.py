@@ -4,12 +4,13 @@ import customtkinter
 
 
 class BasePage(customtkinter.CTk):
-    def __init__(self, controller=None):
+    def __init__(self, controller):
         super().__init__()
         self.controller = controller
 
     def trocar_tela(self, nome_tela):
-        """Função comum para todas as páginas."""
+        """Pede ao controller para abrir uma nova janela e destruir a atual"""
+        self.destroy()
         self.controller.mostrar_tela(nome_tela)
     # ============================================
     # CONFIGURAÇÕES BÁSICAS

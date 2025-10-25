@@ -5,7 +5,7 @@ import customtkinter
 
 
 class LoginPage(BasePage):
-    def __init__(self, controller=None):
+    def __init__(self, controller):
         super().__init__(controller)
         self.configurar_janela()
         self.carregar_recursos()
@@ -59,7 +59,7 @@ class LoginPage(BasePage):
     # CRIANDO BOTÃO ENTRAR
     # ============================================
         self.criar_botoes([
-            ("ENTRAR", self.btn_entrar, 6, 0, 75, (20, 0))
+            ("ENTRAR", lambda: self.trocar_tela("MenuPage"), 6, 0, 75, (20, 0))
         ])
 
 
@@ -106,6 +106,6 @@ class LoginPage(BasePage):
             self.btn_eye.configure(image=self.eye_open_img)  # olho aberto
 
 
-
-app = LoginPage()
-app.mainloop()
+if __name__ == "__main__":
+    app = LoginPage()
+    app.mainloop()
