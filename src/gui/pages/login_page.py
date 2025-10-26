@@ -59,25 +59,6 @@ class LoginPage(BasePage):
         self.criar_botoes([
             ("ENTRAR", lambda: self.trocar_tela("MenuPage"), 6, 0, 75, (20, 0))
         ])
-    # ============================================
-    # FUNÇÃO PARA CRIAR OS ENTRY
-    # ============================================
-    def criar_entry(self, placeholder="", row=0, column=0, padx=75, pady=(0, 0), sticky='w', show=""):
-        entry = customtkinter.CTkEntry(
-            self.frame_menu, 
-            text_color= "gray", 
-            placeholder_text=placeholder, 
-            fg_color="#CECECE", 
-            border_color="#A3A3A3", 
-            width=300, 
-            height=40, 
-            font=("Poppins SemiBold", 14),
-            show=show
-            )
-            
-        entry.grid(row=row, column=column, padx=padx, pady=pady, sticky=sticky)
-        return entry
-
 
     # ============================================
     # FUNÇÃO PARA O BOTÃO ENTRAR
