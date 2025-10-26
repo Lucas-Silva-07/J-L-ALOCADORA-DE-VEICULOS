@@ -5,13 +5,11 @@ import customtkinter
 
 
 class LoginPage(BasePage):
-    def __init__(self, controller):
-        super().__init__(controller)
-        self.configurar_janela()
+    def __init__(self, parent, controller):
+        super().__init__(parent, controller)
         self.carregar_recursos()
         self.criar_frame_principal()
         self.criar_logo()
-    
     # ============================================
     # CRIANDO AS LABELS DA JANELA
     # ============================================
@@ -61,9 +59,9 @@ class LoginPage(BasePage):
         self.criar_botoes([
             ("ENTRAR", lambda: self.trocar_tela("MenuPage"), 6, 0, 75, (20, 0))
         ])
-
-
-    #  FUNÇÃO PARA CRIAR OS ENTRY
+    # ============================================
+    # FUNÇÃO PARA CRIAR OS ENTRY
+    # ============================================
     def criar_entry(self, placeholder="", row=0, column=0, padx=75, pady=(0, 0), sticky='w', show=""):
         entry = customtkinter.CTkEntry(
             self.frame_menu, 
@@ -81,10 +79,14 @@ class LoginPage(BasePage):
         return entry
 
 
-    #Função do botão entrar
+    # ============================================
+    # FUNÇÃO PARA O BOTÃO ENTRAR
+    # ============================================ 
     def btn_entrar(self):
         print("Entrar pressionado")
-
+    # ============================================
+    # CARREGANDO IMAGENS 
+    # ============================================
     def carregar_recursos(self):
         super().carregar_recursos()
         self.eye_open_img = customtkinter.CTkImage(
@@ -95,8 +97,9 @@ class LoginPage(BasePage):
             Image.open(CLOSE_EYE_PATH),
             size=(35, 15)
         )
-
-    #Função senha mostrar/ocultar 
+    # ============================================
+    # FUNÇÃO EXIBIR / OCULTAR SENHA 
+    # ============================================
     def alternar_password(self):
         if self.entry_senha.cget("show") == "":
             self.entry_senha.configure(show="*")
