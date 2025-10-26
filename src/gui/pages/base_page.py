@@ -1,36 +1,22 @@
-from src.config import ICO_PATH, LOGO_PATH, FONT_POPINS, BTN_NORMAL
+from src.config import LOGO_PATH, FONT_POPINS, BTN_NORMAL
 from PIL import Image, ImageEnhance
 import customtkinter
 
 
-class BasePage(customtkinter.CTk):
-    def __init__(self, controller):
-        super().__init__()
+class BasePage(customtkinter.CTkFrame):
+    def __init__(self, parent, controller):
+        super().__init__(parent)
         self.controller = controller
-
+        # Configura layout interno
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_columnconfigure(0, weight=1)
+        self.configure(fg_color="#CECECE")
+    # ============================================
+    # FUNÇÃO PARA TROCAR DE TELA 
+    # ============================================
     def trocar_tela(self, nome_tela):
         """Pede ao controller para abrir uma nova janela e destruir a atual"""
-        self.destroy()
         self.controller.mostrar_tela(nome_tela)
-    # ============================================
-    # CONFIGURAÇÕES BÁSICAS
-    # ============================================
-    def configurar_janela(self):
-        """Define aparência e posição da janela"""
-        self.title("JL Alocadora de Veículos")
-
-        largura_janela = 930
-        altura_janela = 530
-        largura_tela = self.winfo_screenwidth()
-        altura_tela = self.winfo_screenheight()
-
-        x = (largura_tela / 2) - (largura_janela / 2)
-        y = (altura_tela / 2) - (altura_janela / 2)
-
-        self.geometry(f"{largura_janela}x{altura_janela}+{int(x)}+{int(y)}")
-        self.resizable(False, False)
-        self.configure(fg_color="#CECECE")
-        self.iconbitmap(ICO_PATH)
 
     # ============================================
     # CARREGAMENTO DE RECURSOS (FONTES / IMAGENS)
@@ -76,7 +62,8 @@ class BasePage(customtkinter.CTk):
     # ============================================
     # CRIAR LABEL
     # ============================================ 
-    def criar_label(self, texto, row=None, column=0, padx=75, pady=(0, 0), font_size=16, color="black", weight="normal", sticky='w', use_place=False, x=10, y=10, bg_color="transparent", fg_color="transparent", parent=None,):
+    def criar_label(self, texto, row=None, column=0, padx=75, pady=(0, 0), font_size=16, color="black", weight="normal", sticky='w', 
+                    use_place=False, x=10, y=10, bg_color="transparent", fg_color="transparent", parent=None,):
         """
         Cria uma label padronizada e posiciona com grid ou place.
         
@@ -112,7 +99,6 @@ class BasePage(customtkinter.CTk):
             label.grid(row=row, column=column, padx=padx, pady=pady, sticky=sticky)
 
         return label
-
 
     # ============================================
     # BOTÕES E FUNÇÕES
