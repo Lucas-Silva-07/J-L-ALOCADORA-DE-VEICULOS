@@ -105,14 +105,29 @@ class BasePage(customtkinter.CTkFrame):
     # ============================================
     def criar_botoes(self,lista_tupla):
         """
-        Recebe uma lista de Tupla com [(nome do botão, função do botão, linha, coluna, padx, pady)]
+        Recebe uma lista de Tupla com [(nome do botão, função do botão, linha, coluna, padx, pady, sticky)]
+        ex: ("CONSULTAR VALOR", self.consultar_valor, 7, 0, 40, (20, 0), "nw")
         Cria e posiciona todos os botões do menu"""
         botoes = lista_tupla
 
-        for texto, funcao, linha, coluna, padx, pady in botoes:
-            label = self.criar_botao(texto)
-            label.grid(row=linha, column=coluna, padx=padx, pady=pady)
-            label.bind("<Button-1>", lambda e, f=funcao: f())  # passa a função corretamente
+        for item in botoes:
+            label = self.criar_botao(item[0])  # item[0] é o texto do botão
+            
+            # Extrai os argumentos de posicionamento
+            pos_args = item[2:] # pega a partir da linha e coluna
+            
+            # Cria um dicionário de argumentos para a chamada de grid
+            kwargs = {
+                'row': pos_args[0], 
+                'column': pos_args[1], 
+                'padx': pos_args[2], 
+                'pady': pos_args[3]
+            }
+            if len(pos_args) > 4: # Se houver sticky, adiciona ao kwargs
+                kwargs['sticky'] = pos_args[4]
+            
+            label.grid(**kwargs)
+            label.bind("<Button-1>", lambda e, f=item[1]: f()) # item[1] é a função
             self.adicionar_hover_escurecer(label)
 
     def criar_botao(self, texto):
@@ -127,6 +142,73 @@ class BasePage(customtkinter.CTkFrame):
             image=self.img_normal,
             cursor="hand2"
             )
+
+    # ============================================
+    # FUNÇÃO PARA CRIAR OS ENTRY
+    # ============================================
+    def criar_entry(self, placeholder="", row=0, column=0, padx=75, pady=(0, 0), sticky='w', show=""):
+        entry = customtkinter.CTkEntry(
+            self.frame_menu, 
+            text_color= "gray", 
+            placeholder_text=placeholder, 
+            fg_color="#CECECE", 
+            border_color="#A3A3A3", 
+            width=300, 
+            height=40, 
+            font=("Poppins SemiBold", 14),
+            show=show
+            )
+            
+        entry.grid(row=row, column=column, padx=padx, pady=pady, sticky=sticky)
+        return entry
+    
+    # ============================================
+    # FUNÇÃO PARA CRIAR OS COMBOBOX
+    # ============================================
+    def criar_combobox(self, command=None, row=0, column=0, padx=20, pady=(0, 0), sticky='w', texto="Selecione uma opção"):
+        frame_borda = customtkinter.CTkFrame(
+            self.frame_menu,
+            border_width=2,  # Define a largura da borda do frame
+            corner_radius=25,
+            bg_color="transparent",
+            fg_color="#cecece",
+            width=300,
+            height=40,
+            border_color="gray")  # Define o fundo como transparente
+        frame_borda.grid(row=row, column=column, padx=padx, pady=pady, sticky=sticky)
+        # Se nenhum comando for passado, usa o método padrão
+        if command is None:
+            command = self.combobox_callback
+
+        combo_var = customtkinter.StringVar(value=texto)
+
+        combobox = customtkinter.CTkComboBox(
+            master=frame_borda,
+            width=280,
+            height=20,
+            variable=combo_var,
+            corner_radius=15,
+            text_color= "#535353",
+            fg_color="#CECECE",
+            border_color="#CECECE",
+            bg_color="transparent",
+            font=("Poppins SemiBold", 14),
+            dropdown_font=("Poppins SemiBold", 14, "bold"),
+            dropdown_fg_color="#CECECE",
+            dropdown_text_color="black",
+            dropdown_hover_color="gray",
+            values=["Opção 1", "Opção 2", "Opção 3"],
+            command=command,
+            button_color="#CECECE",
+            button_hover_color="#CECECE"
+        )
+
+        combobox.place(relx=0.5, rely=0.51, anchor=customtkinter.CENTER)
+        return combobox
+            
+    # Função que será chamada quando uma opção for selecionada
+    def combobox_callback(self,choice):
+        print("Opção selecionada:", choice)
 
     # ============================================
     # EFEITO HOVER ESCURECER
