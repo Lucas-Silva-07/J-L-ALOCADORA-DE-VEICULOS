@@ -26,16 +26,6 @@ class BasePage(customtkinter.CTkFrame):
         # Fonte personalizada
         customtkinter.FontManager.load_font(FONT_POPINS)
 
-        # Carrega imagem base uma única vez
-        self.img_base = Image.open(BTN_NORMAL)
-
-        # Cria CTkImage padrão
-        self.img_normal = customtkinter.CTkImage(
-            light_image=self.img_base,
-            dark_image=self.img_base,
-            size=(300, 40)
-        )
-
         # Logo
         self.img_logo = customtkinter.CTkImage(
             Image.open(LOGO_PATH),
@@ -54,10 +44,10 @@ class BasePage(customtkinter.CTkFrame):
         self.frame_menu.grid_rowconfigure((0, 1, 2, 3), weight=0)
         self.frame_menu.grid_columnconfigure(0, weight=1)
 
-    def criar_logo(self):
+    def criar_logo(self, x=400, y=-20):
         """Exibe o logo à direita"""
         label_logo = customtkinter.CTkLabel(self, image=self.img_logo, text="")
-        label_logo.place(x=400, y=-20)
+        label_logo.place(x=x, y=-y)
 
     # ============================================
     # CRIAR LABEL
@@ -103,45 +93,100 @@ class BasePage(customtkinter.CTkFrame):
     # ============================================
     # BOTÕES E FUNÇÕES
     # ============================================
-    def criar_botoes(self,lista_tupla):
-        """
-        Recebe uma lista de Tupla com [(nome do botão, função do botão, linha, coluna, padx, pady, sticky)]
-        ex: ("CONSULTAR VALOR", self.consultar_valor, 7, 0, 40, (20, 0), "nw")
-        Cria e posiciona todos os botões do menu"""
-        botoes = lista_tupla
 
-        for item in botoes:
-            label = self.criar_botao(item[0])  # item[0] é o texto do botão
-            
-            # Extrai os argumentos de posicionamento
-            pos_args = item[2:] # pega a partir da linha e coluna
-            
-            # Cria um dicionário de argumentos para a chamada de grid
-            kwargs = {
-                'row': pos_args[0], 
-                'column': pos_args[1], 
-                'padx': pos_args[2], 
-                'pady': pos_args[3]
-            }
-            if len(pos_args) > 4: # Se houver sticky, adiciona ao kwargs
-                kwargs['sticky'] = pos_args[4]
-            
-            label.grid(**kwargs)
-            label.bind("<Button-1>", lambda e, f=item[1]: f()) # item[1] é a função
-            self.adicionar_hover_escurecer(label)
-
-    def criar_botao(self, texto):
+    def criar_botao(self, texto, row=None, column=0, padx=0, pady=(0, 0), tamanho=(300, 40), 
+                    sticky='w',  use_place=False, x=10, y=10, parent=None, command=None):
         """Cria um botão padrão do menu usando label com imagem"""
-        return customtkinter.CTkLabel(
-            self.frame_menu, 
+
+        parent= parent or self.frame_menu
+        if command is None:
+            command = self.btn_callback
+        # CARREGAR IMAGEM    
+        self.img_base = Image.open(BTN_NORMAL)
+        self.img_button = customtkinter.CTkImage(
+            light_image=self.img_base,
+            dark_image=self.img_base,
+            size=tamanho
+        )
+
+
+        botao = customtkinter.CTkLabel(
+            parent, 
             text=texto, 
             font=("Poppins SemiBold", 14), 
             text_color="white", 
             fg_color="transparent", 
             bg_color="transparent", 
-            image=self.img_normal,
+            image=self.img_button,
             cursor="hand2"
-            )
+        )
+
+        if use_place:
+            botao.place(x=x, y=y)
+        else:
+        # row precisa estar definido para usar grid
+            if row is None:
+                raise ValueError("O parâmetro 'row' é obrigatório quando não estiver usando place().")
+            botao.grid(row=row, column=column, padx=padx, pady=pady, sticky=sticky)
+            botao.bind("<Button-1>", lambda e, f=command: f()) # item[1] é a função
+            
+        self.adicionar_hover_escurecer(botao)
+        
+        return botao
+
+
+
+
+
+
+
+
+
+
+
+    # def criar_botoes(self,lista_tupla):
+    #     """
+    #     Recebe uma lista de Tupla com [(nome do botão, função do botão, linha, coluna, padx, pady, sticky)]
+    #     ex: ("CONSULTAR VALOR", self.consultar_valor, 7, 0, 40, (20, 0), "nw")
+    #     Cria e posiciona todos os botões do menu
+    #     """
+    #     botoes = lista_tupla
+
+    #     for item in botoes:
+    #         label = self.criar_botao(item[0])  # item[0] é o texto do botão
+            
+    #         # Extrai os argumentos de posicionamento
+    #         pos_args = item[2:] # pega a partir da linha e coluna
+            
+    #         # Cria um dicionário de argumentos para a chamada de grid
+    #         kwargs = {
+    #             'row': pos_args[0], 
+    #             'column': pos_args[1], 
+    #             'padx': pos_args[2], 
+    #             'pady': pos_args[3]
+    #         }
+    #         if len(pos_args) > 4: # Se houver sticky, adiciona ao kwargs
+    #             kwargs['sticky'] = pos_args[4]
+            
+    #         label.grid(**kwargs)
+    #         label.bind("<Button-1>", lambda e, f=item[1]: f()) # item[1] é a função
+    #         self.adicionar_hover_escurecer(label)
+
+    # def criar_botao(self, texto, tamanho=(300, 40)):
+    #     """Cria um botão padrão do menu usando label com imagem"""
+    #     self.img_buttton = customtkinter.CTkImage(
+    #         Image.open(BTN_NORMAL), size=tamanho)
+
+    #     return customtkinter.CTkLabel(
+    #         self.frame_menu, 
+    #         text=texto, 
+    #         font=("Poppins SemiBold", 14), 
+    #         text_color="white", 
+    #         fg_color="transparent", 
+    #         bg_color="transparent", 
+    #         image=self.img_buttton,
+    #         cursor="hand2"
+    #         )
 
     # ============================================
     # FUNÇÃO PARA CRIAR OS ENTRY
@@ -204,11 +249,15 @@ class BasePage(customtkinter.CTkFrame):
         )
 
         combobox.place(relx=0.5, rely=0.51, anchor=customtkinter.CENTER)
+        combobox._entry.configure(state="readonly")
         return combobox
             
     # Função que será chamada quando uma opção for selecionada
     def combobox_callback(self,choice):
         print("Opção selecionada:", choice)
+
+    def btn_callback(self):
+        print("Botão pressionado")
 
     # ============================================
     # EFEITO HOVER ESCURECER
