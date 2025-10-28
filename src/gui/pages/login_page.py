@@ -10,6 +10,7 @@ class LoginPage(BasePage):
         self.carregar_recursos()
         self.criar_frame_principal()
         self.criar_logo()
+
     # ============================================
     # CRIANDO AS LABELS DA JANELA
     # ============================================
@@ -56,9 +57,9 @@ class LoginPage(BasePage):
     # ============================================
     # CRIANDO BOTÃO ENTRAR
     # ============================================
-        self.criar_botoes([
-            ("ENTRAR", lambda: self.trocar_tela("MenuPage"), 6, 0, 75, (20, 0))
-        ])
+        self.criar_botao(
+            "ENTRAR", row= 6, padx=75, pady=(20, 0), command=lambda: self.trocar_tela("MenuPage")
+        )
 
     # ============================================
     # FUNÇÃO PARA O BOTÃO ENTRAR
