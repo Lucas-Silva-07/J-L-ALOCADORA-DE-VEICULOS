@@ -93,7 +93,6 @@ class BasePage(customtkinter.CTkFrame):
     # ============================================
     # BOTÕES E FUNÇÕES
     # ============================================
-
     def criar_botao(self, texto, row=None, column=0, padx=0, pady=(0, 0), tamanho=(300, 40), 
                     sticky='w',  use_place=False, x=10, y=10, parent=None, command=None):
         """Cria um botão padrão do menu usando label com imagem"""
@@ -108,7 +107,6 @@ class BasePage(customtkinter.CTkFrame):
             dark_image=self.img_base,
             size=tamanho
         )
-
 
         botao = customtkinter.CTkLabel(
             parent, 
@@ -133,60 +131,6 @@ class BasePage(customtkinter.CTkFrame):
         self.adicionar_hover_escurecer(botao)
         
         return botao
-
-
-
-
-
-
-
-
-
-
-
-    # def criar_botoes(self,lista_tupla):
-    #     """
-    #     Recebe uma lista de Tupla com [(nome do botão, função do botão, linha, coluna, padx, pady, sticky)]
-    #     ex: ("CONSULTAR VALOR", self.consultar_valor, 7, 0, 40, (20, 0), "nw")
-    #     Cria e posiciona todos os botões do menu
-    #     """
-    #     botoes = lista_tupla
-
-    #     for item in botoes:
-    #         label = self.criar_botao(item[0])  # item[0] é o texto do botão
-            
-    #         # Extrai os argumentos de posicionamento
-    #         pos_args = item[2:] # pega a partir da linha e coluna
-            
-    #         # Cria um dicionário de argumentos para a chamada de grid
-    #         kwargs = {
-    #             'row': pos_args[0], 
-    #             'column': pos_args[1], 
-    #             'padx': pos_args[2], 
-    #             'pady': pos_args[3]
-    #         }
-    #         if len(pos_args) > 4: # Se houver sticky, adiciona ao kwargs
-    #             kwargs['sticky'] = pos_args[4]
-            
-    #         label.grid(**kwargs)
-    #         label.bind("<Button-1>", lambda e, f=item[1]: f()) # item[1] é a função
-    #         self.adicionar_hover_escurecer(label)
-
-    # def criar_botao(self, texto, tamanho=(300, 40)):
-    #     """Cria um botão padrão do menu usando label com imagem"""
-    #     self.img_buttton = customtkinter.CTkImage(
-    #         Image.open(BTN_NORMAL), size=tamanho)
-
-    #     return customtkinter.CTkLabel(
-    #         self.frame_menu, 
-    #         text=texto, 
-    #         font=("Poppins SemiBold", 14), 
-    #         text_color="white", 
-    #         fg_color="transparent", 
-    #         bg_color="transparent", 
-    #         image=self.img_buttton,
-    #         cursor="hand2"
-    #         )
 
     # ============================================
     # FUNÇÃO PARA CRIAR OS ENTRY

@@ -17,3 +17,5 @@ EYE_PATH = os.path.join(PASTA_ANTERIOR, "assets", "images", "eye.png")
 CLOSE_EYE_PATH = os.path.join(PASTA_ANTERIOR, "assets", "images", "invisible.png")
 #CAMINHO DA IMAGEM DO BOTÃO
 BTN_NORMAL = os.path.join(PASTA_ANTERIOR, "assets", "images", "btn_normal.png")
+
+IMG_CONSULTA = os.path.join(PASTA_ANTERIOR, "assets", "images", "img_consulta.png")

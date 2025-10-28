@@ -1,17 +1,20 @@
 from src.gui.pages.base_page import BasePage
-
+from src.config import IMG_CONSULTA
+from PIL import Image
+import customtkinter
 
 class NovaConsulta(BasePage):
     def __init__(self, parent, controller):
         super().__init__(parent, controller)
         self.carregar_recursos()
         self.criar_frame_principal()
+        self.criar_logo(x=500, y=-78)
 
     # ============================================
     # CRIADO OS TEXTOS DA INTERFACE
     # ============================================
         self.criar_label(
-            "NOVA SIMULAÇÃO DE ALUGUEL", row=0, padx=40, pady=(30, 0), font_size=30
+            "NOVA SIMULAÇÃO DE ALUGUEL", row=0, padx=40, pady=(30, 0), font_size=28
         )
         self.criar_label(
             "Escolha a Categoria de Custo:", row=1, padx=40, pady=(0, 0), font_size=16
@@ -23,6 +26,9 @@ class NovaConsulta(BasePage):
             "Modelo do Carro:", row=5, padx=40, pady=(20, 0), font_size=16
         )
 
+        self.criar_label(
+            "R$ 3.500,00", font_size=30, use_place=True, x=580, y=140, parent=self, bg_color="white"
+        )
 
     # ============================================
     # CRIANDO OS ENTRY DA JANELA
@@ -40,17 +46,21 @@ class NovaConsulta(BasePage):
     # ============================================
     # CRIANDO OS BOTÕES DA JANELA
     # ============================================
-        self.criar_botoes([
-            ("CONSULTAR VALOR", self.consultar_valor, 7, 0, 40, (20, 0), "nw")
-        ])
+        self.criar_botao(
+            "CONSULTAR VALOR", row= 7, padx=40, pady=(20, 0)
+        )
 
-    def consultar_valor(self):
-        print("Consultar valor pressionado")
-
+    # ============================================
+    # CARREGANDO IMAGEM ONDE FICA O VALOR 
+    # ============================================
+    def carregar_recursos(self):
+        super().carregar_recursos()
+        self.img_logo = customtkinter.CTkImage(
+            Image.open(IMG_CONSULTA),
+            size=(350, 350)
+        )
 
 if __name__ == "__main__":
-    import customtkinter
-
     # Classe "fake" simulando o controller
     class FakeController:
         def mostrar_tela(self, nome_tela):
