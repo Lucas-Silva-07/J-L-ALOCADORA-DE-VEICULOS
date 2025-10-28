@@ -10,12 +10,19 @@ class MenuPage(BasePage):
     # ============================================
     # CRIANDO BOTÕES DA TELA
     # ============================================
-        self.criar_botoes([
-            ("Nova Consulta", self.nova_consulta, 0, 0, 75, (140, 0)),
-            ("Carros Alugados", self.carros_alugados, 1, 0, 75, (20, 0)),
-            ("Configuração de Conta", self.configuracao_conta, 2, 0, 75, (20, 0)),
-            ("Sair da Conta", lambda: self.trocar_tela("LoginPage"), 3, 0, 75, (20, 0))
-        ])
+        self.criar_botao(
+            "Nova Consulta", row= 0, padx=75, pady=(140, 0), command=lambda: self.trocar_tela("NovaConsulta")
+        )
+        self.criar_botao(
+            "Carros Alugados", row= 1, padx=75, pady=(20, 0), command=self.carros_alugados
+        )
+        self.criar_botao(
+            "Configuração de Conta", row= 2, padx=75, pady=(20, 0), command= self.configuracao_conta
+        )
+        self.criar_botao(
+            "Sair da Conta", row= 3, padx=75, pady=(20, 0), command=lambda: self.trocar_tela("LoginPage")
+        )
+
     # ============================================
     # TEXTO PRINCIPAL
     # ============================================
