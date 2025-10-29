@@ -9,7 +9,6 @@ class NovaConsulta(BasePage):
         self.carregar_recursos()
         self.criar_frame_principal()
         self.criar_logo(x=500, y=-78)
-
     # ============================================
     # CRIADO OS TEXTOS DA INTERFACE
     # ============================================
@@ -31,16 +30,16 @@ class NovaConsulta(BasePage):
         )
 
     # ============================================
-    # CRIANDO OS ENTRY DA JANELA
+    # CRIANDO OS COMBOBOX DA JANELA
     # ============================================
         self.combobox_categoria = self.criar_combobox(
-            row= 2, padx=40
+            row=2, padx=40, texto="Selecione a Categoria"
         )
         self.combobox_carroceria = self.criar_combobox(
-            row= 4, padx=40
+            row=4, padx=40, texto="Selecione a Carroceria"
         )
         self.combobox_carro = self.criar_combobox(
-            row= 6, padx=40
+            row=6, padx=40, texto="Selecione o Modelo"
         )
 
     # ============================================
@@ -48,6 +47,14 @@ class NovaConsulta(BasePage):
     # ============================================
         self.criar_botao(
             "CONSULTAR VALOR", row= 7, padx=40, pady=(20, 0)
+        )
+
+        self.criar_botao(
+            "VOLTAR", row= 8, padx=40, pady=(20, 0), tamanho= (150, 40), command=lambda: self.trocar_tela("MenuPage")
+        )
+
+        self.criar_botao(
+            "LIMPAR", use_place=True, parent=self,tamanho= (150, 40), x=500, y=415, command= self.limpar_todos_combobox
         )
 
     # ============================================
