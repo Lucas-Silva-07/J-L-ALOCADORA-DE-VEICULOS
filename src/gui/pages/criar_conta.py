@@ -35,6 +35,10 @@ class CriarConta(BasePage):
         self.criar_label(
             "Confirmar\nSenha:", row=5, pady=(20, 0), font_size=16
         )
+        self.criar_conta = self.criar_label(
+            "Já tem uma conta? Clique aqui.", row=7, pady=(20, 0), font_size=12, color="#c03838"
+        )
+        self.criar_conta.bind("<Button-1>", lambda e: self.trocar_tela("LoginPage"))
     
     # ============================================
     # CRIANDO OS ENTRY DA JANELA
