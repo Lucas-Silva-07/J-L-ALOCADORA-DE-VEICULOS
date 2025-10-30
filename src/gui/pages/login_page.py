@@ -29,7 +29,10 @@ class LoginPage(BasePage):
         self.criar_label(
             "Senha:", row=4, pady=(20, 0), font_size=16
         )
-    
+        self.criar_conta = self.criar_label(
+            "Não tem uma conta? Clique aqui.", row=7, pady=(20, 0), font_size=12, color="#c03838"
+        )
+        self.criar_conta.bind("<Button-1>", lambda e: self.trocar_tela("CriarConta"))
     # ============================================
     # CRIANDO OS ENTRY DA JANELA
     # ============================================
@@ -92,5 +95,26 @@ class LoginPage(BasePage):
 
 
 if __name__ == "__main__":
-    app = LoginPage()
-    app.mainloop()
+    # Classe "fake" simulando o controller
+    class FakeController:
+        def mostrar_tela(self, nome_tela):
+            print(f"Trocando para: {nome_tela}")
+    
+    # Janela principal fake
+    root = customtkinter.CTk()
+    largura_janela = 930
+    altura_janela = 530
+    largura_tela = root.winfo_screenwidth()
+    altura_tela = root.winfo_screenheight()
+
+    x = (largura_tela / 2) - (largura_janela / 2)
+    y = (altura_tela / 2) - (altura_janela / 2)
+
+    root.geometry(f"{largura_janela}x{altura_janela}+{int(x)}+{int(y)}")
+    root.resizable(False, False)
+    root.title("Tela de Teste - LoginPage")
+    root.configure(fg_color="#CECECE")
+    page = LoginPage(root, FakeController())
+    page.pack(fill="both", expand=True)
+
+    root.mainloop()
