@@ -8,7 +8,7 @@ class NovaConsulta(BasePage):
         super().__init__(parent, controller)
         self.carregar_recursos()
         self.criar_frame_principal()
-        self.criar_logo(x=500, y=-78)
+        self.criar_logo(x=500, y=-75)
     # ============================================
     # CRIADO OS TEXTOS DA INTERFACE
     # ============================================
@@ -55,6 +55,10 @@ class NovaConsulta(BasePage):
 
         self.criar_botao(
             "LIMPAR", use_place=True, parent=self,tamanho= (150, 40), x=500, y=415, command= self.limpar_todos_combobox
+        )
+
+        self.criar_botao(
+            "ACEITAR", use_place=True, parent=self,tamanho= (150, 40), x=700, y=415
         )
 
     # ============================================
