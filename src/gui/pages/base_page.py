@@ -11,6 +11,7 @@ class BasePage(customtkinter.CTkFrame):
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
         self.configure(fg_color="#CECECE")
+        self.comboboxes = []  # LISTA PARA PODER LIMPAR OS COMBOBOX
     # ============================================
     # FUNÇÃO PARA TROCAR DE TELA 
     # ============================================
@@ -93,7 +94,7 @@ class BasePage(customtkinter.CTkFrame):
     # ============================================
     # BOTÕES E FUNÇÕES
     # ============================================
-    def criar_botao(self, texto, row=None, column=0, padx=0, pady=(0, 0), tamanho=(300, 40), 
+    def criar_botao(self, texto, font_size=14, text_color="white", row=None, column=0, padx=0, pady=(0, 0), tamanho=(300, 40), 
                     sticky='w',  use_place=False, x=10, y=10, parent=None, command=None):
         """Cria um botão padrão do menu usando label com imagem"""
 
@@ -111,8 +112,8 @@ class BasePage(customtkinter.CTkFrame):
         botao = customtkinter.CTkLabel(
             parent, 
             text=texto, 
-            font=("Poppins SemiBold", 14), 
-            text_color="white", 
+            font=("Poppins SemiBold", font_size), 
+            text_color=text_color, 
             fg_color="transparent", 
             bg_color="transparent", 
             image=self.img_button,
@@ -126,29 +127,36 @@ class BasePage(customtkinter.CTkFrame):
             if row is None:
                 raise ValueError("O parâmetro 'row' é obrigatório quando não estiver usando place().")
             botao.grid(row=row, column=column, padx=padx, pady=pady, sticky=sticky)
-            botao.bind("<Button-1>", lambda e, f=command: f()) # item[1] é a função
+        botao.bind("<Button-1>", lambda e, f=command: f()) # item[1] é a função
             
-        self.adicionar_hover_escurecer(botao)
+        self.adicionar_hover_escurecer(botao, tamanho=tamanho)
         
         return botao
 
     # ============================================
     # FUNÇÃO PARA CRIAR OS ENTRY
     # ============================================
-    def criar_entry(self, placeholder="", row=0, column=0, padx=75, pady=(0, 0), sticky='w', show=""):
+    def criar_entry(self, placeholder="", row=None, column=0, padx=75, pady=(0, 0), sticky='w', show="", width=300, height=40, use_place=False, x=10, y=10):
         entry = customtkinter.CTkEntry(
             self.frame_menu, 
             text_color= "gray", 
             placeholder_text=placeholder, 
             fg_color="#CECECE", 
             border_color="#A3A3A3", 
-            width=300, 
-            height=40, 
+            width=width, 
+            height=height, 
             font=("Poppins SemiBold", 14),
             show=show
             )
-            
-        entry.grid(row=row, column=column, padx=padx, pady=pady, sticky=sticky)
+        
+        if use_place:
+            entry.place(x=x, y=y)
+        else:
+        # row precisa estar definido para usar grid
+            if row is None:
+                raise ValueError("O parâmetro 'row' é obrigatório quando não estiver usando place().")
+            entry.grid(row=row, column=column, padx=padx, pady=pady, sticky=sticky)
+        
         return entry
     
     # ============================================
@@ -163,21 +171,27 @@ class BasePage(customtkinter.CTkFrame):
             fg_color="#cecece",
             width=300,
             height=40,
-            border_color="gray")  # Define o fundo como transparente
+            border_color="gray"
+        ) 
         frame_borda.grid(row=row, column=column, padx=padx, pady=pady, sticky=sticky)
+        
+        # Cria a variável do combobox
+        combo_var = customtkinter.StringVar(value=texto)
+        
         # Se nenhum comando for passado, usa o método padrão
         if command is None:
             command = self.combobox_callback
 
-        combo_var = customtkinter.StringVar(value=texto)
-
+        opcoes = ["Opção 1", "Opção 2", "Opção 3"]
+        
+        # Cria o combobox
         combobox = customtkinter.CTkComboBox(
             master=frame_borda,
             width=280,
             height=20,
             variable=combo_var,
             corner_radius=15,
-            text_color= "#535353",
+            text_color= "#808080",
             fg_color="#CECECE",
             border_color="#CECECE",
             bg_color="transparent",
@@ -186,43 +200,81 @@ class BasePage(customtkinter.CTkFrame):
             dropdown_fg_color="#CECECE",
             dropdown_text_color="black",
             dropdown_hover_color="gray",
-            values=["Opção 1", "Opção 2", "Opção 3"],
-            command=command,
+            values=opcoes,
+            command=lambda choice: self._on_combobox_select(choice, combobox, combo_var, texto, command),
             button_color="#CECECE",
             button_hover_color="#CECECE"
         )
-
         combobox.place(relx=0.5, rely=0.51, anchor=customtkinter.CENTER)
+        # Coloca como "somente leitura"
         combobox._entry.configure(state="readonly")
+        # Marca internamente o placeholder
+        combobox._is_placeholder = True
+        combobox._placeholder_text = texto
+        combobox._entry.configure(fg="#808080")  # texto cinza inicial
+        # adiciona o combobox à lista
+        self.comboboxes.append({"combo": combobox, "var": combo_var, "placeholder": texto})
+
         return combobox
-            
-    # Função que será chamada quando uma opção for selecionada
+    
+    # ============================================   
+    # FUNÇÃO PARA GERENCIAR O PLACEHOLDER 
+    # ============================================ 
+    def _on_combobox_select(self, choice, combobox, combo_var, placeholder, command):
+        """Gerencia a seleção e o placeholder do combobox."""
+        # Atualiza cor e estado normal
+        combo_var.set(choice)
+        combobox._entry.configure(fg="#000000")
+        combobox._is_placeholder = False
+        # Chama o callback externo (se houver)
+        if callable(command):
+            command(choice)
+
+    # ============================================   
+    # FUNÇÃO PARA LIMPAR TODOS PLACEHOLDER
+    # ============================================   
+    def limpar_todos_combobox(self):
+        for item in self.comboboxes:
+            combo = item["combo"]
+            var = item["var"]
+            placeholder = item["placeholder"]
+            var.set(placeholder)                # atualiza o StringVar
+            combo._entry.configure(fg="#808080")  # coloca texto em cinza
+            combo._is_placeholder = True
+        
+
+    # ============================================        
+    # Função quando uma opção for selecionada no combobox
+    # ============================================
     def combobox_callback(self,choice):
         print("Opção selecionada:", choice)
 
+    # ============================================
+    # Função que será chamada quando um botão for pressionado
+    # ============================================
     def btn_callback(self):
         print("Botão pressionado")
 
     # ============================================
     # EFEITO HOVER ESCURECER
     # ============================================
-    def adicionar_hover_escurecer(self, botao):
+    def adicionar_hover_escurecer(self, botao, tamanho=(300, 40)):
         """Aplica efeito suave de escurecimento no hover"""
         botao._hover_ativo = False
         botao._brilho_atual = 1.0  # brilho inicial (100%)
 
         def on_enter(_):
             botao._hover_ativo = True
-            self._animar_escurecer(botao, 1.0, 0.55)  # 85% brilho no hover
+            self._animar_escurecer(botao, 1.0, 0.55, tamanho=tamanho)  # 85% brilho no hover
 
         def on_leave(_):
             botao._hover_ativo = False
-            self._animar_escurecer(botao, botao._brilho_atual, 1.0)
+            self._animar_escurecer(botao, botao._brilho_atual, 1.0, tamanho=tamanho)
 
         botao.bind("<Enter>", on_enter)
         botao.bind("<Leave>", on_leave)
 
-    def _animar_escurecer(self, botao, brilho_inicial, brilho_final, passos=8, tempo=20):
+    def _animar_escurecer(self, botao, brilho_inicial, brilho_final, passos=8, tempo=20, tamanho=(300, 40)):
         """Anima suavemente a mudança de brilho"""
         diferenca = (brilho_final - brilho_inicial) / passos
         brilho = brilho_inicial
@@ -243,7 +295,7 @@ class BasePage(customtkinter.CTkFrame):
                 nova_img = customtkinter.CTkImage(
                     light_image=img_editada,
                     dark_image=img_editada,
-                    size=(300, 40)
+                    size=tamanho
                 )
                 botao.configure(image=nova_img)
 
