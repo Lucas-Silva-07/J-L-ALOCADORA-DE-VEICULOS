@@ -10,6 +10,7 @@ if ROOT_DIR not in sys.path:
 from src.gui.pages.login_page import LoginPage
 from src.gui.pages.menu_page import MenuPage
 from src.gui.pages.nova_consulta import NovaConsulta
+from src.gui.pages.criar_conta import CriarConta
 
 
 class App(customtkinter.CTk):
@@ -50,7 +51,7 @@ class App(customtkinter.CTk):
         # Dicionário de telas
         self.frames = {}
 
-        for Page in (LoginPage, MenuPage, NovaConsulta):
+        for Page in (LoginPage, MenuPage, NovaConsulta, CriarConta):
             nome = Page.__name__
             frame = Page(parent=self.container, controller=self)
             self.frames[nome] = frame
