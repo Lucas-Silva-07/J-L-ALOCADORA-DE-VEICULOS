@@ -17,7 +17,7 @@ class MenuPage(BasePage):
             "Carros Alugados", row= 1, padx=75, pady=(20, 0), command=self.carros_alugados
         )
         self.criar_botao(
-            "Configuração de Conta", row= 2, padx=75, pady=(20, 0), command= self.configuracao_conta
+            "Configuração de Conta", row= 2, padx=75, pady=(20, 0), command=lambda: self.trocar_tela("ConfigurarConta")
         )
         self.criar_botao(
             "Sair da Conta", row= 3, padx=75, pady=(20, 0), command=lambda: self.trocar_tela("LoginPage")
